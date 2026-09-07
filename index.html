@@ -1,0 +1,1266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>India Salary Offer & Tax Regime Comparator (FY 2026-27) | Multi-Offer & ESOPs</title>
+  <meta name="description" content="Compare Indian job offers, evaluate New vs Old tax regime (FY 2026-27), calculate real in-hand hike, and model ESOP / RSU equity vesting.">
+  <meta name="theme-color" content="#0f172a">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="SalaryEngine">
+  <link rel="manifest" href="manifest.json">
+  <link rel="icon" type="image/svg+xml" href="icons/icon.svg">
+  <link rel="apple-touch-icon" href="icons/icon-192.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+  <div class="container">
+    
+    <!-- Top Navigation & Profile Toolbar -->
+    <nav class="top-nav">
+      <a href="#" class="nav-brand">
+        <div class="brand-icon">₹</div>
+        <div>
+          <div class="brand-text">SalaryEngine</div>
+        </div>
+        <span class="brand-badge">FY 2026-27</span>
+      </a>
+
+      <!-- Storage & Action Toolbar -->
+      <div class="nav-actions">
+        <div class="storage-status-pill" id="storage-status">
+          <span class="status-dot"></span>
+          <span id="storage-status-text">Auto-saved</span>
+        </div>
+        <button type="button" class="btn-tool" id="btn-open-profiles">
+          <svg viewBox="0 0 24 24"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+          <span>Profiles</span>
+        </button>
+        <button type="button" class="btn-tool" id="btn-export-json">
+          <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          <span>Export JSON</span>
+        </button>
+        <button type="button" class="btn-tool" id="btn-trigger-import">
+          <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+          <span>Import JSON</span>
+        </button>
+        <input type="file" id="file-import-input" accept=".json" style="display:none;">
+        <button type="button" class="btn-tool" id="btn-reset-state" title="Reset all fields to standard defaults">
+          <svg viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
+          <span>Reset</span>
+        </button>
+
+      </div>
+    </nav>
+
+    <!-- Header Hero -->
+    <header class="hero-header">
+      <div class="hero-tagline">
+        <svg class="tagline-icon" viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+        <span>Includes FY 2026-27 Budget Slabs, 8-City 50% HRA &amp; ESOP Vesting Engine</span>
+      </div>
+      <h1>India Salary Offer &amp; Tax Regime Comparator</h1>
+      <p class="lead">
+        Salary hikes quoted in CTC disguise the truth once PF, gratuity, and tax slabs take their cut.
+        Compare multiple offers side-by-side, separate ESOP equity from CTC, and see which tax regime leaves more in your bank.
+      </p>
+    </header>
+
+    <!-- Main Application Grid -->
+    <main class="app-layout">
+      
+      <!-- ═════════════════════════════════════════════════════════════════
+           LEFT COLUMN: INPUTS & OFFERS
+           ═════════════════════════════════════════════════════════════════ -->
+      <div class="input-column">
+        
+        <!-- CARD 1: PROFILE & RULES -->
+        <div class="card" id="card-profile">
+          <div class="card-header">
+            <div class="card-title-group">
+              <span class="card-icon">
+                <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+              </span>
+              <h2 class="card-title">Profile &amp; Rules</h2>
+            </div>
+            <span class="badge-pill">FY 2026-27</span>
+          </div>
+
+          <!-- Age Bracket -->
+          <div class="form-group">
+            <div class="label-row">
+              <label for="age-bracket">Age Bracket</label>
+              <span class="sub-label">Slabs vary under Old Regime only</span>
+            </div>
+            <div class="segmented-control" id="age-selector">
+              <label class="seg-label active">
+                <input type="radio" name="age-bracket" value="under60" checked>
+                <span>&lt; 60 yrs</span>
+              </label>
+              <label class="seg-label">
+                <input type="radio" name="age-bracket" value="60to80">
+                <span>60 &ndash; 80 yrs</span>
+              </label>
+              <label class="seg-label">
+                <input type="radio" name="age-bracket" value="above80">
+                <span>80+ yrs</span>
+              </label>
+            </div>
+          </div>
+
+          <!-- City & HRA Metro Status -->
+          <div class="form-row">
+            <div class="form-group">
+              <div class="label-row">
+                <label for="profile-city">
+                  City
+                  <span class="tooltip-wrapper">
+                    <span class="info-dot">?</span>
+                    <span class="tooltip-box">Bengaluru, Pune, Hyderabad, and Ahmedabad join Delhi, Mumbai, Kolkata, Chennai as 50% HRA metros under FY 26-27 rules.</span>
+                  </span>
+                </label>
+              </div>
+              <select id="profile-city">
+                <option value="bengaluru" selected>Bengaluru (Metro 50%)</option>
+                <option value="mumbai">Mumbai (Metro 50%)</option>
+                <option value="delhi">Delhi / NCR (Metro 50%)</option>
+                <option value="hyderabad">Hyderabad (Metro 50%)</option>
+                <option value="pune">Pune (Metro 50%)</option>
+                <option value="chennai">Chennai (Metro 50%)</option>
+                <option value="kolkata">Kolkata (Metro 50%)</option>
+                <option value="ahmedabad">Ahmedabad (Metro 50%)</option>
+                <option value="other">Other City (Non-Metro 40%)</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <div class="label-row">
+                <label for="pf-ceiling">
+                  PF Contribution Basis
+                  <span class="tooltip-wrapper">
+                    <span class="info-dot">?</span>
+                    <span class="tooltip-box">Most MNCs pay 12% on Actual Basic. Some companies cap mandatory EPF at ₹1,800/mo (12% of ₹15,000 wage ceiling).</span>
+                  </span>
+                </label>
+              </div>
+              <select id="pf-ceiling">
+                <option value="actual" selected>12% on Actual Basic</option>
+                <option value="capped">Capped at ₹1,800/mo (₹15k ceiling)</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Bonus & Sector Toggles -->
+          <div class="form-row">
+            <div class="form-group">
+              <div class="label-row">
+                <label for="bonus-treatment">Bonus In Hike Math</label>
+              </div>
+              <select id="bonus-treatment">
+                <option value="include" selected>Include expected bonus</option>
+                <option value="exclude">Exclude variable pay</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <div class="label-row">
+                <label for="employer-type">Employer Type</label>
+              </div>
+              <select id="employer-type">
+                <option value="private" selected>Private Sector</option>
+                <option value="govt">Central/State Govt</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <!-- CARD 2: CURRENT SALARY (OPTIONAL) -->
+        <div class="card" id="card-current-salary">
+          <div class="card-header">
+            <div class="card-title-group">
+              <span class="card-icon">
+                <svg viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+              </span>
+              <h2 class="card-title">Current Salary</h2>
+            </div>
+            
+            <div class="card-header-actions">
+              <div class="pill-switch" id="current-mode-switch">
+                <button type="button" class="pill-btn active" data-mode="quick">Quick</button>
+                <button type="button" class="pill-btn" data-mode="detailed">Detailed</button>
+              </div>
+              <label class="switch-label" title="Toggle current salary entry">
+                <input type="checkbox" id="current-salary-enabled" checked style="display:none;">
+                <div class="toggle-track">
+                  <div class="toggle-thumb"></div>
+                </div>
+              </label>
+            </div>
+          </div>
+
+          <div id="current-salary-body">
+            <!-- Quick Mode Field -->
+            <div class="form-group" id="current-quick-group">
+              <div class="label-row">
+                <label for="current-ctc">Annual CTC</label>
+                <span class="sub-label" id="current-ctc-monthly">₹0/mo</span>
+              </div>
+              <div class="input-wrapper">
+                <span class="input-prefix">₹</span>
+                <input type="text" id="current-ctc" class="has-prefix has-suffix" value="20,00,000" placeholder="e.g. 20,00,000">
+                <span class="input-suffix-tag">/year</span>
+              </div>
+              <div class="slider-row">
+                <input type="range" id="current-ctc-slider" min="300000" max="15000000" step="50000" value="2000000">
+              </div>
+            </div>
+
+            <!-- Detailed Breakdown (auto-populated in quick mode, fully editable) -->
+            <div id="current-detailed-group" style="display: none;">
+              <div class="detailed-total-banner">
+                <div>
+                  <div class="detailed-total-label">Current Total CTC (Sum of Details)</div>
+                  <div class="detailed-total-sub">Basic + HRA + Special + Bonus + PF + Gratuity + NPS</div>
+                </div>
+                <div class="text-right">
+                  <div class="detailed-total-amount" id="cur-detailed-total">₹20,00,000 / yr</div>
+                  <div class="detailed-total-sub" id="cur-detailed-total-sub">₹1,66,667 / mo</div>
+                </div>
+              </div>
+
+              <div class="form-row">
+                <div class="form-group">
+                  <div class="label-row">
+                    <label for="cur-basic">Basic Salary</label>
+                    <span class="sub-label" id="cur-basic-sub">40% of CTC</span>
+                  </div>
+                  <div class="input-wrapper">
+                    <span class="input-prefix">₹</span>
+                    <input type="text" id="cur-basic" class="has-prefix is-default" value="8,00,000">
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <div class="label-row">
+                    <label for="cur-hra">HRA Received</label>
+                    <span class="sub-label" id="cur-hra-sub">50% of Basic</span>
+                  </div>
+                  <div class="input-wrapper">
+                    <span class="input-prefix">₹</span>
+                    <input type="text" id="cur-hra" class="has-prefix is-default" value="4,00,000">
+                  </div>
+                </div>
+              </div>
+
+              <div class="form-row">
+                <div class="form-group">
+                  <div class="label-row">
+                    <label for="cur-special">Special / Fixed Allowances</label>
+                  </div>
+                  <div class="input-wrapper">
+                    <span class="input-prefix">₹</span>
+                    <input type="text" id="cur-special" class="has-prefix is-default" value="5,07,800">
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <div class="label-row">
+                    <label for="cur-bonus">Expected Bonus / Variable</label>
+                  </div>
+                  <div class="input-wrapper">
+                    <span class="input-prefix">₹</span>
+                    <input type="text" id="cur-bonus" class="has-prefix" value="0">
+                  </div>
+                </div>
+              </div>
+
+              <div class="form-row">
+                <div class="form-group">
+                  <div class="label-row">
+                    <label for="cur-employer-pf">Employer PF (12%)</label>
+                  </div>
+                  <div class="input-wrapper">
+                    <span class="input-prefix">₹</span>
+                    <input type="text" id="cur-employer-pf" class="has-prefix is-default" value="96,000">
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <div class="label-row">
+                    <label for="cur-gratuity">Gratuity Provision (4.81%)</label>
+                  </div>
+                  <div class="input-wrapper">
+                    <span class="input-prefix">₹</span>
+                    <input type="text" id="cur-gratuity" class="has-prefix is-default" value="38,480">
+                  </div>
+                </div>
+              </div>
+
+              <div class="form-row">
+                <div class="form-group">
+                  <div class="label-row">
+                    <label for="cur-employer-nps">Employer NPS (₹)</label>
+                  </div>
+                  <div class="input-wrapper">
+                    <span class="input-prefix">₹</span>
+                    <input type="text" id="cur-employer-nps" class="has-prefix" value="0">
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <div class="label-row">
+                    <label for="cur-employee-pf">Employee PF (₹)</label>
+                  </div>
+                  <div class="input-wrapper">
+                    <span class="input-prefix">₹</span>
+                    <input type="text" id="cur-employee-pf" class="has-prefix is-default" value="96,000">
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div id="current-salary-disabled-msg" style="display: none; padding: 12px 0; color: var(--text-muted); font-size: 0.85rem; text-align: center;">
+            Current salary skipped. The calculator will run in <strong>Regime Picker Mode</strong> for the new offers.
+          </div>
+        </div>
+
+        <!-- CARD 3: MULTI-OFFER SALARY & ESOP ENGINE -->
+        <div class="card" id="card-new-offer">
+          <div class="card-header">
+            <div class="card-title-group">
+              <span class="card-icon">
+                <svg viewBox="0 0 24 24"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>
+              </span>
+              <h2 class="card-title">Job Offers &amp; ESOPs</h2>
+            </div>
+            
+            <div class="card-header-actions">
+              <span class="badge-pill purple" id="offers-count-badge">1 of 5 Offers</span>
+              <div class="pill-switch" id="offer-mode-switch">
+                <button type="button" class="pill-btn active" data-mode="quick">Quick</button>
+                <button type="button" class="pill-btn" data-mode="detailed">Detailed</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Multi-offer Tabs Strip -->
+          <div class="offer-tabs-container">
+            <div class="offer-tabs-strip" id="offer-tabs-strip">
+              <!-- Dynamically populated offer tab buttons -->
+            </div>
+          </div>
+
+          <!-- Active Offer Meta Header (Label & Company) -->
+          <div class="offer-header-inputs" style="margin-top: 14px;">
+            <div class="form-group" style="margin-bottom:0;">
+              <label for="offer-label-input">Offer Identifier / Title</label>
+              <input type="text" id="offer-label-input" value="Offer A" placeholder="e.g. Offer A (Product Corp)">
+            </div>
+            <div class="form-group" style="margin-bottom:0;">
+              <label for="offer-company-input">Company Name</label>
+              <input type="text" id="offer-company-input" value="Tech Corp" placeholder="e.g. Organization / Employer">
+            </div>
+          </div>
+
+          <hr class="hr-divider">
+
+          <!-- Quick Mode Field for Active Offer -->
+          <div class="form-group" id="offer-quick-group">
+            <div class="label-row">
+              <label for="offer-ctc">Offered Annual CTC</label>
+              <span class="sub-label" id="offer-ctc-monthly">₹0/mo</span>
+            </div>
+            <div class="input-wrapper">
+              <span class="input-prefix">₹</span>
+              <input type="text" id="offer-ctc" class="has-prefix has-suffix" value="26,00,000" placeholder="e.g. 26,00,000">
+              <span class="input-suffix-tag">/year</span>
+            </div>
+            <div class="slider-row">
+              <input type="range" id="offer-ctc-slider" min="300000" max="25000000" step="50000" value="2600000">
+            </div>
+          </div>
+
+          <!-- Detailed Breakdown for Active Offer -->
+          <div id="offer-detailed-group" style="display: none;">
+            <div class="detailed-total-banner">
+              <div>
+                <div class="detailed-total-label">Offered Total CTC (Sum of Details)</div>
+                <div class="detailed-total-sub">All fixed allowances + variable + employer costs + perks</div>
+              </div>
+              <div style="text-align: right;">
+                <div class="detailed-total-amount" id="off-detailed-total">₹26,00,000 / yr</div>
+                <div class="detailed-total-sub" id="off-detailed-total-sub">₹2,16,667 / mo</div>
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <div class="label-row">
+                  <label for="off-basic">Basic Salary</label>
+                  <span class="sub-label" id="off-basic-sub">40% of CTC</span>
+                </div>
+                <div class="input-wrapper">
+                  <span class="input-prefix">₹</span>
+                  <input type="text" id="off-basic" class="has-prefix is-default" value="10,40,000">
+                </div>
+              </div>
+
+              <div class="form-group">
+                <div class="label-row">
+                  <label for="off-hra">HRA Received</label>
+                  <span class="sub-label" id="off-hra-sub">50% of Basic</span>
+                </div>
+                <div class="input-wrapper">
+                  <span class="input-prefix">₹</span>
+                  <input type="text" id="off-hra" class="has-prefix is-default" value="5,20,000">
+                </div>
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <div class="label-row">
+                  <label for="off-special">Special / Fixed Allowances</label>
+                </div>
+                <div class="input-wrapper">
+                  <span class="input-prefix">₹</span>
+                  <input type="text" id="off-special" class="has-prefix is-default" value="6,60,140">
+                </div>
+              </div>
+
+              <div class="form-group">
+                <div class="label-row">
+                  <label for="off-bonus">Expected Bonus / Variable</label>
+                </div>
+                <div class="input-wrapper">
+                  <span class="input-prefix">₹</span>
+                  <input type="text" id="off-bonus" class="has-prefix" value="0">
+                </div>
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <div class="label-row">
+                  <label for="off-employer-pf">Employer PF (12%)</label>
+                </div>
+                <div class="input-wrapper">
+                  <span class="input-prefix">₹</span>
+                  <input type="text" id="off-employer-pf" class="has-prefix is-default" value="1,24,800">
+                </div>
+              </div>
+
+              <div class="form-group">
+                <div class="label-row">
+                  <label for="off-gratuity">Gratuity Provision (4.81%)</label>
+                </div>
+                <div class="input-wrapper">
+                  <span class="input-prefix">₹</span>
+                  <input type="text" id="off-gratuity" class="has-prefix is-default" value="50,024">
+                </div>
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <div class="label-row">
+                  <label for="off-employer-nps">Employer NPS (₹)</label>
+                  <span class="sub-label">Max 14% New / 10% Old</span>
+                </div>
+                <div class="input-wrapper">
+                  <span class="input-prefix">₹</span>
+                  <input type="text" id="off-employer-nps" class="has-prefix" value="0">
+                </div>
+              </div>
+
+              <div class="form-group">
+                <div class="label-row">
+                  <label for="off-employee-pf">Employee PF (₹)</label>
+                </div>
+                <div class="input-wrapper">
+                  <span class="input-prefix">₹</span>
+                  <input type="text" id="off-employee-pf" class="has-prefix is-default" value="1,24,800">
+                </div>
+              </div>
+            </div>
+
+            <!-- Advanced Allowances & Perks Collapsible -->
+            <div class="details-summary" id="adv-allowance-toggle">
+              <span class="details-summary-title">
+                <svg class="btn-icon" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>
+                <span>Advanced Perks &amp; Reimbursements (LTA, Meal, Fuel, Joining)</span>
+              </span>
+              <span id="adv-icon">▼</span>
+            </div>
+            <div class="details-content" id="adv-allowance-content" style="display: none;">
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="off-lta">LTA / Travel Reimbursement</label>
+                  <div class="input-wrapper">
+                    <span class="input-prefix">₹</span>
+                    <input type="text" id="off-lta" class="has-prefix" value="0">
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label for="off-meal">Meal Coupons / Vouchers</label>
+                  <div class="input-wrapper">
+                    <span class="input-prefix">₹</span>
+                    <input type="text" id="off-meal" class="has-prefix" value="0">
+                  </div>
+                </div>
+              </div>
+
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="off-fuel">Car Lease / Driver / Fuel Allowance</label>
+                  <div class="input-wrapper">
+                    <span class="input-prefix">₹</span>
+                    <input type="text" id="off-fuel" class="has-prefix" value="0">
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label for="off-telecom">Telephone & Internet Allowance</label>
+                  <div class="input-wrapper">
+                    <span class="input-prefix">₹</span>
+                    <input type="text" id="off-telecom" class="has-prefix" value="0">
+                  </div>
+                </div>
+              </div>
+
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="off-joining">One-time Joining / Relocation Bonus</label>
+                  <div class="input-wrapper">
+                    <span class="input-prefix">₹</span>
+                    <input type="text" id="off-joining" class="has-prefix" value="0">
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- ═══════════════════════════════════════════════════════════════
+               ESOP / RSU EQUITY COMPONENT (KEPT SEPARATE FROM CTC)
+               ═══════════════════════════════════════════════════════════════ -->
+          <div class="esop-section-card" id="esop-card">
+            <div class="esop-header-row">
+              <div class="esop-title">
+                <svg class="btn-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="m16 8-4 4-3-3-3 3"/><path d="M16 12V8h-4"/></svg>
+                <span>ESOP / RSU Stock Grants</span>
+                <span class="badge-pill purple xs">Separate from CTC</span>
+              </div>
+              <label class="switch-label" title="Enable ESOP calculation for this offer">
+                <input type="checkbox" id="esop-enabled" style="display:none;">
+                <div class="toggle-track">
+                  <div class="toggle-thumb"></div>
+                </div>
+              </label>
+            </div>
+
+            <div class="esop-body" id="esop-body" style="display: none;">
+              <!-- Entry Mode Pill Switch: Total Value vs Units & Today's Price -->
+              <div class="esop-mode-header">
+                <label class="esop-mode-label">Stock Grant Specification</label>
+                <div class="pill-switch" id="esop-mode-switch">
+                  <button type="button" class="pill-btn active" data-mode="value">Total Value (₹)</button>
+                  <button type="button" class="pill-btn" data-mode="units">Units &amp; Today's Price</button>
+                </div>
+              </div>
+
+              <!-- Mode 1: Total Value (₹) -->
+              <div id="esop-value-group">
+                <div class="form-group">
+                  <div class="label-row">
+                    <label for="esop-grant-input">Total ESOP / Equity Grant Value</label>
+                    <span class="sub-label">Cumulative Grant (₹)</span>
+                  </div>
+                  <div class="input-wrapper">
+                    <span class="input-prefix">₹</span>
+                    <input type="text" id="esop-grant-input" class="has-prefix" value="12,00,000" placeholder="e.g. 12,00,000">
+                  </div>
+                </div>
+              </div>
+
+              <!-- Mode 2: Units & Today's Value -->
+              <div id="esop-units-group" style="display: none;">
+                <div class="form-row">
+                  <div class="form-group">
+                    <div class="label-row">
+                      <label for="esop-units-input">Number of Options / Units</label>
+                      <span class="sub-label">Total Shares</span>
+                    </div>
+                    <div class="input-wrapper">
+                      <input type="text" id="esop-units-input" class="has-prefix" value="1,000" placeholder="e.g. 1,000" style="padding-left: 12px;">
+                    </div>
+                  </div>
+
+                  <div class="form-group">
+                    <div class="label-row">
+                      <label for="esop-price-input">Today's Value / Share Price</label>
+                      <div class="pill-switch esop-currency-switch" id="esop-currency-switch">
+                        <button type="button" class="pill-btn active esop-currency-btn" data-currency="INR">₹ INR</button>
+                        <button type="button" class="pill-btn esop-currency-btn" data-currency="USD">$ USD</button>
+                      </div>
+                    </div>
+                    <div class="input-wrapper">
+                      <span class="input-prefix" id="esop-price-prefix">₹</span>
+                      <input type="text" id="esop-price-input" class="has-prefix" value="1,200" placeholder="e.g. 1,200">
+                    </div>
+                  </div>
+                </div>
+
+                <!-- USD Exchange Rate Row (visible when USD is active) -->
+                <div id="esop-usd-rate-row" class="esop-usd-banner">
+                  <div class="esop-usd-inner">
+                    <span style="color: var(--text-secondary);">USD Exchange Rate: 1 USD =</span>
+                    <div style="display: flex; align-items: center; gap: 4px;">
+                      <span style="color: var(--text-muted);">₹</span>
+                      <input type="number" id="esop-usd-rate-input" class="esop-usd-input" value="87" step="0.5">
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Calculated Total Banner for Units Mode -->
+                <div class="detailed-total-banner esop-calc-banner">
+                  <div>
+                    <div class="detailed-total-label esop-calc-title">Calculated Total Equity Value</div>
+                    <div class="detailed-total-sub" id="esop-calc-math">1,000 units × ₹1,200/unit</div>
+                  </div>
+                  <div class="text-right">
+                    <div class="detailed-total-amount esop-calc-total" id="esop-calc-total">₹12,00,000</div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Shared Vesting Horizon -->
+              <div class="form-group" style="margin-bottom: 14px;">
+                <div class="label-row">
+                  <label for="esop-years-select">Vesting Horizon</label>
+                </div>
+                <select id="esop-years-select">
+                  <option value="1">1 Year</option>
+                  <option value="2">2 Years</option>
+                  <option value="3">3 Years</option>
+                  <option value="4" selected>4 Years (Standard 4-Year Schedule)</option>
+                  <option value="5">5 Years</option>
+                </select>
+              </div>
+
+              <!-- Equal vs Custom Vesting Schedule -->
+              <div class="form-group">
+                <div class="label-row">
+                  <label>Vesting Schedule Distribution</label>
+                  <span class="sub-label" id="esop-schedule-summary">Equal (25% per year)</span>
+                </div>
+                <div class="segmented-control two-cols" id="esop-schedule-type-switch">
+                  <label class="seg-label active" data-type="equal">
+                    <input type="radio" name="esop-sched-type" value="equal" checked>
+                    <span>Equal Per Year</span>
+                  </label>
+                  <label class="seg-label" data-type="custom">
+                    <input type="radio" name="esop-sched-type" value="custom">
+                    <span>Custom Percentages</span>
+                  </label>
+                </div>
+              </div>
+
+              <!-- Custom Percentages Inputs (Visible when Custom is selected) -->
+              <div id="esop-custom-pcts-container" style="display: none;">
+                <div class="label-row" style="margin-bottom: 8px;">
+                  <label>Set Vesting % Per Year</label>
+                  <span class="sub-label" id="esop-pct-total-feedback" style="font-weight:700; color:#a5b4fc;">Total: 100%</span>
+                </div>
+                <div id="esop-custom-inputs-grid" class="esop-custom-grid">
+                  <!-- Dynamic year percentage inputs -->
+                </div>
+              </div>
+
+              <!-- Visual Year-by-Year Vesting Schedule Cards -->
+              <div class="esop-years-grid" id="esop-years-schedule-display">
+                <!-- Injected via JavaScript -->
+              </div>
+
+              <div class="esop-summary-pill">
+                <span>Year 1 Realized Equity: <strong id="esop-yr1-val" style="color:#c084fc;">₹3,00,000</strong></span>
+                <span>Annual Average: <strong id="esop-avg-val" style="color:#e9d5ff;">₹3,00,000 / yr</strong></span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- CARD 4: DEDUCTIONS & EXEMPTIONS (FOR REGIME EVALUATION) -->
+        <div class="card" id="card-deductions">
+          <div class="card-header">
+            <div class="card-title-group">
+              <span class="card-icon">
+                <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+              </span>
+              <h2 class="card-title">Deductions &amp; Investments</h2>
+            </div>
+            <span class="badge-pill">Old Regime Only</span>
+          </div>
+
+          <p class="form-subtext">
+            Standard Deduction (₹75k New / ₹50k Old) and Employer NPS are applied automatically. Fill your real rent and savings below:
+          </p>
+
+          <!-- Annual Rent -->
+          <div class="form-group">
+            <div class="label-row">
+              <label for="rent-annual">
+                Annual Rent Paid
+                <span class="tooltip-wrapper">
+                  <span class="info-dot">?</span>
+                  <span class="tooltip-box">HRA exemption = lowest of (Actual HRA, 50%/40% of Basic, or Rent minus 10% of Basic). If you do not rent, leave as 0.</span>
+                </span>
+              </label>
+              <span class="sub-label" id="rent-monthly-lbl">₹30,000/mo</span>
+            </div>
+            <div class="input-wrapper">
+              <span class="input-prefix">₹</span>
+              <input type="text" id="rent-annual" class="has-prefix has-suffix" value="3,60,000">
+              <span class="input-suffix-tag">/year</span>
+            </div>
+            <div class="slider-row">
+              <input type="range" id="rent-slider" min="0" max="1500000" step="12000" value="360000">
+            </div>
+          </div>
+
+          <!-- Section 80C Combined -->
+          <div class="form-group">
+            <div class="label-row">
+              <label for="investments-80c">
+                80C Investments (PPF, ELSS, LIC, Home Principal)
+                <span class="tooltip-wrapper">
+                  <span class="info-dot">?</span>
+                  <span class="tooltip-box">Note: Employee PF automatically counts inside the ₹1.5L cap. Only enter remaining eligible 80C investments here.</span>
+                </span>
+              </label>
+              <span class="sub-label" id="total-80c-room">Room left: ₹25,200</span>
+            </div>
+            <div class="input-wrapper">
+              <span class="input-prefix">₹</span>
+              <input type="text" id="investments-80c" class="has-prefix" value="50,000">
+            </div>
+            <p style="font-size: 0.7rem; color: #a5b4fc; margin-top: 4px;">
+              Total 80C claimed (EPF + Other): <strong id="total-80c-claimed">₹1,50,000</strong> (capped at ₹1.5L).
+            </p>
+          </div>
+
+          <!-- Section 80D Health Insurance -->
+          <div class="form-row">
+            <div class="form-group">
+              <div class="label-row">
+                <label for="insurance-80d-self">80D: Self &amp; Family</label>
+              </div>
+              <div class="input-wrapper">
+                <span class="input-prefix">₹</span>
+                <input type="text" id="insurance-80d-self" class="has-prefix" value="25,000">
+              </div>
+              <label class="checkbox-subtext">
+                <input type="checkbox" id="self-senior"> Self/Spouse is Senior Citizen (₹50k cap)
+              </label>
+            </div>
+
+            <div class="form-group">
+              <div class="label-row">
+                <label for="insurance-80d-parents">80D: Parents</label>
+              </div>
+              <div class="input-wrapper">
+                <span class="input-prefix">₹</span>
+                <input type="text" id="insurance-80d-parents" class="has-prefix" value="30,000">
+              </div>
+              <label class="checkbox-subtext">
+                <input type="checkbox" id="parents-senior" checked> Parents are Senior Citizens (₹50k cap)
+              </label>
+            </div>
+          </div>
+
+          <!-- Home Loan Interest 24(b) & Self NPS 80CCD(1B) -->
+          <div class="form-row">
+            <div class="form-group">
+              <div class="label-row">
+                <label for="homeloan-interest">Home Loan Interest (24b)</label>
+                <span class="sub-label">Max ₹2,00,000</span>
+              </div>
+              <div class="input-wrapper">
+                <span class="input-prefix">₹</span>
+                <input type="text" id="homeloan-interest" class="has-prefix" value="0">
+              </div>
+            </div>
+
+            <div class="form-group">
+              <div class="label-row">
+                <label for="nps-80ccd1b">Self NPS 80CCD(1B)</label>
+                <span class="sub-label">Max ₹50,000</span>
+              </div>
+              <div class="input-wrapper">
+                <span class="input-prefix">₹</span>
+                <input type="text" id="nps-80ccd1b" class="has-prefix" value="50,000">
+              </div>
+            </div>
+          </div>
+
+          <!-- Other Deductions -->
+          <div class="form-group">
+            <div class="label-row">
+              <label for="other-deductions">Other Deductions (80E Education Loan, 80G, etc.)</label>
+            </div>
+            <div class="input-wrapper">
+              <span class="input-prefix">₹</span>
+              <input type="text" id="other-deductions" class="has-prefix" value="0">
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- ═════════════════════════════════════════════════════════════════
+           RIGHT COLUMN: MULTI-OFFER LEADERBOARD & ACTIVE OFFER RESULTS
+           ═════════════════════════════════════════════════════════════════ -->
+      <div class="output-column">
+
+        <!-- MULTI-OFFER LEADERBOARD SUMMARY CARD -->
+        <section id="panel-leaderboard">
+          <div class="leaderboard-card">
+            <div class="card-header">
+              <div class="card-title-group">
+                <span class="card-icon amber">
+                  <svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11"/></svg>
+                </span>
+                <h2 class="card-title">Offer Leaderboard &amp; Ranking</h2>
+              </div>
+              <span class="leaderboard-badge" id="leaderboard-active-tag">Comparing All Offers</span>
+            </div>
+
+            <div class="table-container">
+              <table class="comparison-table" id="leaderboard-table">
+                <thead>
+                  <tr>
+                    <th class="table-rank-th">Rank</th>
+                    <th>Offer &amp; Company</th>
+                    <th class="text-right">CTC (Salary)</th>
+                    <th class="text-right">ESOP (Yr 1)</th>
+                    <th class="text-center">Best Regime</th>
+                    <th class="text-right">In-Hand Cash</th>
+                    <th class="text-right">Realized Value</th>
+                  </tr>
+                </thead>
+                <tbody id="leaderboard-table-body">
+                  <!-- Injected via JavaScript -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- FLOW A: OFFER COMPARISON (SHOWN IF CURRENT SALARY GIVEN) -->
+        <section id="panel-hike-comparison">
+          <div class="card">
+            <div class="card-header">
+              <div class="card-title-group">
+                <span class="card-icon">
+                  <svg viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+                </span>
+                <h2 class="card-title" id="hike-analysis-title">Salary Hike &amp; In-Hand Analysis (Offer A)</h2>
+              </div>
+              <span class="badge-pill" id="hike-verdict-badge">Offer vs Current</span>
+            </div>
+
+            <!-- Hero Metrics Grid -->
+            <div class="hero-metric-grid">
+              <div class="metric-card">
+                <div class="metric-title">
+                  <span>Gross CTC Growth</span>
+                  <svg viewBox="0 0 24 24"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
+                </div>
+                <div class="metric-value" id="gross-hike-pct">+30.0%</div>
+                <div class="metric-sub" id="gross-hike-abs">+₹6,00,000 / yr</div>
+              </div>
+
+              <div class="metric-card highlight positive" id="metric-card-net">
+                <div class="metric-title">
+                  <span>Net In-Hand Growth</span>
+                  <svg viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>
+                </div>
+                <div class="metric-value" id="net-hike-pct">+28.5%</div>
+                <div class="metric-sub" id="net-hike-abs">+₹4,12,000 / yr in bank</div>
+              </div>
+
+              <div class="metric-card" id="metric-card-erosion">
+                <div class="metric-title">
+                  <span>Growth Drag</span>
+                  <svg viewBox="0 0 24 24"><polyline points="23 18 13.5 8.5 8.5 13.5 1 6"/><polyline points="17 18 23 18 23 12"/></svg>
+                </div>
+                <div class="metric-value" id="hike-erosion-pts">1.5 pts</div>
+                <div class="metric-sub" id="hike-erosion-desc">Lost to tax &amp; PF</div>
+              </div>
+            </div>
+
+            <!-- Plain Language Callout -->
+            <div class="callout-box" id="plain-language-callout">
+              Calculating hike summary...
+            </div>
+
+            <!-- Total Compensation Banner (CTC + ESOP) -->
+            <div class="total-comp-card" id="total-comp-card">
+              <div class="total-comp-header">
+                <div class="total-comp-title">Total Annual Compensation Breakdown (Active Offer)</div>
+                <span class="badge-pill purple" id="total-comp-equity-share">Equity: 0%</span>
+              </div>
+              <div class="total-comp-grid">
+                <div class="total-comp-metric">
+                  <span class="total-comp-metric-lbl">Cost to Company (CTC)</span>
+                  <span class="total-comp-metric-val" id="tc-ctc-val">₹26,00,000</span>
+                  <span class="metric-sub" id="tc-ctc-mo">₹2,16,667 / mo</span>
+                </div>
+                <div class="total-comp-metric">
+                  <span class="total-comp-metric-lbl">Annualized ESOP / Equity</span>
+                  <span class="total-comp-metric-val" id="tc-esop-val" style="color:#c084fc;">+ ₹0</span>
+                  <span class="metric-sub" id="tc-esop-sub">Vested Year 1</span>
+                </div>
+                <div class="total-comp-metric highlight">
+                  <span class="total-comp-metric-lbl">Total Compensation (CTC + ESOP)</span>
+                  <span class="total-comp-metric-val" id="tc-total-val">₹26,00,000</span>
+                  <span class="metric-sub" id="tc-realized-val">In-Hand + Equity: ₹0</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Component Comparison Table -->
+            <div class="table-container">
+              <table class="comparison-table">
+                <thead>
+                  <tr>
+                    <th>Salary Component</th>
+                    <th style="text-align: right;">Current (Annual)</th>
+                    <th style="text-align: right;" id="col-offer-name-header">Active Offer</th>
+                    <th style="text-align: right;">Monthly Difference</th>
+                  </tr>
+                </thead>
+                <tbody id="comparison-table-body">
+                  <!-- Injected via JavaScript -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- FLOW A NOTICE (IF CURRENT SALARY HIDDEN) -->
+        <div class="flow-a-hidden-notice" id="flow-a-notice" style="display: none;">
+          <p><strong>Offer Comparison is currently paused.</strong> You've skipped current salary entry. Showing Regime Recommendation for the active offer below.</p>
+          <button type="button" id="btn-enable-current">Enter Current Salary to see % Hike</button>
+        </div>
+
+        <!-- FLOW B: REGIME PICKER (OLD VS NEW) -->
+        <section id="panel-regime-picker">
+          <div class="card">
+            <div class="card-header">
+              <div class="card-title-group">
+                <span class="card-icon green">
+                  <svg viewBox="0 0 24 24"><path d="m16 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z"/><path d="m2 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z"/><path d="M7 21h10"/><path d="M12 3v18"/><path d="M3 7h2c2 0 5-1 7-2 2 1 5 2 7 2h2"/></svg>
+                </span>
+                <h2 class="card-title" id="regime-picker-title">Tax Regime Recommendation (Active Offer)</h2>
+              </div>
+              <span class="badge-pill green" id="engine-stamp">AY 2027-28 Live</span>
+            </div>
+
+            <!-- Big Recommendation Banner -->
+            <div class="recommendation-banner" id="rec-banner">
+              <div class="rec-text-group">
+                <div class="rec-badge-title" id="rec-winner-badge">Recommended Regime</div>
+                <div class="rec-main-line" id="rec-winner-title">New Tax Regime is Better</div>
+              </div>
+              <div class="rec-savings-pill">
+                <div class="rec-savings-amount" id="rec-savings-val">₹0</div>
+                <div class="rec-savings-sub" id="rec-savings-sub">more take-home per year</div>
+              </div>
+            </div>
+
+            <!-- Sensitivity Analysis Line -->
+            <div class="sensitivity-line" id="sensitivity-line">
+              <svg class="btn-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+              <span id="sensitivity-text">Evaluating breakeven threshold...</span>
+            </div>
+
+            <!-- Side by Side Regime Cards -->
+            <div class="regime-split-grid">
+              
+              <!-- OLD REGIME CARD -->
+              <div class="regime-card" id="card-regime-old">
+                <div class="winner-badge" id="badge-winner-old" style="display:none;">
+                  <svg width="11" height="11" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+                  <span>Recommended</span>
+                </div>
+                <div class="regime-card-header">
+                  <div>
+                    <div class="regime-name">Old Tax Regime</div>
+                    <div class="regime-tag">With HRA, 80C, 80D & Loan deductions</div>
+                  </div>
+                </div>
+
+                <div class="regime-takehome">
+                  <div class="takehome-label">Net Annual Take-Home</div>
+                  <div class="takehome-val" id="old-takehome-annual">₹0</div>
+                  <div class="takehome-sub" id="old-takehome-monthly">₹0 / month</div>
+                </div>
+
+                <div class="regime-breakdown-list">
+                  <div class="r-item">
+                    <span>Cash Gross Salary</span>
+                    <span class="r-val" id="old-cash-gross">₹0</span>
+                  </div>
+                  <div class="r-item">
+                    <span>Standard Deduction</span>
+                    <span class="r-val">− ₹50,000</span>
+                  </div>
+                  <div class="r-item">
+                    <span>HRA Exemption</span>
+                    <span class="r-val" id="old-hra-exempt">− ₹0</span>
+                  </div>
+                  <div class="r-item">
+                    <span>80C + 80D + Other</span>
+                    <span class="r-val" id="old-other-deduct">− ₹0</span>
+                  </div>
+                  <div class="r-item subtotal">
+                    <span>Taxable Income</span>
+                    <span class="r-val" id="old-taxable-income">₹0</span>
+                  </div>
+                  <div class="r-item">
+                    <span>Income Tax</span>
+                    <span class="r-val" id="old-base-tax">₹0</span>
+                  </div>
+                  <div class="r-item">
+                    <span>Section 87A Rebate</span>
+                    <span class="r-val" id="old-rebate-87a">₹0</span>
+                  </div>
+                  <div class="r-item">
+                    <span>Surcharge & Marginal Relief</span>
+                    <span class="r-val" id="old-surcharge">₹0</span>
+                  </div>
+                  <div class="r-item">
+                    <span>Cess (4%)</span>
+                    <span class="r-val" id="old-cess">₹0</span>
+                  </div>
+                  <div class="r-item subtotal" style="color: var(--red-text);">
+                    <span>Total Tax Payable</span>
+                    <span class="r-val" id="old-total-tax">₹0</span>
+                  </div>
+                  <div class="r-item">
+                    <span>Employee PF & Deductions</span>
+                    <span class="r-val" id="old-emp-deduct">₹0</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- NEW REGIME CARD -->
+              <div class="regime-card" id="card-regime-new">
+                <div class="winner-badge" id="badge-winner-new" style="display:none;">
+                  <svg width="11" height="11" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+                  <span>Recommended</span>
+                </div>
+                <div class="regime-card-header">
+                  <div>
+                    <div class="regime-name">New Tax Regime</div>
+                    <div class="regime-tag">Default (§202) • Slabs up to ₹24L+</div>
+                  </div>
+                </div>
+
+                <div class="regime-takehome">
+                  <div class="takehome-label">Net Annual Take-Home</div>
+                  <div class="takehome-val" id="new-takehome-annual">₹0</div>
+                  <div class="takehome-sub" id="new-takehome-monthly">₹0 / month</div>
+                </div>
+
+                <div class="regime-breakdown-list">
+                  <div class="r-item">
+                    <span>Cash Gross Salary</span>
+                    <span class="r-val" id="new-cash-gross">₹0</span>
+                  </div>
+                  <div class="r-item">
+                    <span>Standard Deduction</span>
+                    <span class="r-val">− ₹75,000</span>
+                  </div>
+                  <div class="r-item">
+                    <span>Employer NPS 80CCD(2)</span>
+                    <span class="r-val" id="new-nps-exempt">− ₹0</span>
+                  </div>
+                  <div class="r-item subtotal">
+                    <span>Taxable Income</span>
+                    <span class="r-val" id="new-taxable-income">₹0</span>
+                  </div>
+                  <div class="r-item">
+                    <span>Income Tax</span>
+                    <span class="r-val" id="new-base-tax">₹0</span>
+                  </div>
+                  <div class="r-item">
+                    <span>Section 87A Rebate (≤₹12L)</span>
+                    <span class="r-val" id="new-rebate-87a">₹0</span>
+                  </div>
+                  <div class="r-item">
+                    <span>Surcharge & Marginal Relief</span>
+                    <span class="r-val" id="new-surcharge">₹0</span>
+                  </div>
+                  <div class="r-item">
+                    <span>Cess (4%)</span>
+                    <span class="r-val" id="new-cess">₹0</span>
+                  </div>
+                  <div class="r-item subtotal" style="color: var(--red-text);">
+                    <span>Total Tax Payable</span>
+                    <span class="r-val" id="new-total-tax">₹0</span>
+                  </div>
+                  <div class="r-item">
+                    <span>Employee PF & Deductions</span>
+                    <span class="r-val" id="new-emp-deduct">₹0</span>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </section>
+
+        <!-- VISUAL CHARTS CARD -->
+        <section id="panel-charts">
+          <div class="card">
+            <div class="card-header">
+              <div class="card-title-group">
+                <span class="card-icon purple">
+                  <svg viewBox="0 0 24 24"><path d="M21.21 15.89A10 10 0 1 1 8 2.83"/><path d="M22 12A10 10 0 0 0 12 2v10z"/></svg>
+                </span>
+                <h2 class="card-title">Visual Breakdowns</h2>
+              </div>
+              <span class="badge-pill">Interactive</span>
+            </div>
+
+            <div class="charts-grid">
+              <!-- DONUT: CTC COMPOSITION -->
+              <div class="chart-card">
+                <div class="chart-card-title">
+                  <svg class="btn-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="3"/></svg>
+                  <span id="donut-chart-title">Active Offer CTC Composition</span>
+                </div>
+
+                <div class="donut-holder">
+                  <svg class="donut-svg" viewBox="0 0 100 100" id="donut-svg">
+                    <!-- Segments rendered by JS -->
+                  </svg>
+                  <div class="donut-center-info">
+                    <div class="donut-center-amt" id="donut-center-total">₹0</div>
+                    <div class="donut-center-lbl">Offered CTC</div>
+                  </div>
+                </div>
+
+                <div class="legend-list" id="donut-legend">
+                  <!-- Injected by JS -->
+                </div>
+              </div>
+
+              <!-- BAR: TAKE HOME & DEDUCTIONS COMPARISON -->
+              <div class="chart-card">
+                <div class="chart-card-title">
+                  <svg class="btn-icon" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 17V9"/><path d="M15 17V5"/></svg>
+                  <span>Take-Home vs Tax vs Deductions</span>
+                </div>
+
+                <div class="bar-chart-container" id="stacked-bar-container">
+                  <!-- Stacked bars injected by JS -->
+                </div>
+
+                <div class="chart-legend-row">
+                  <div class="chart-legend-item"><span class="chart-legend-swatch takehome"></span> In-Hand Cash</div>
+                  <div class="chart-legend-item"><span class="chart-legend-swatch tax"></span> Income Tax</div>
+                  <div class="chart-legend-item"><span class="chart-legend-swatch pf"></span> Employee PF</div>
+                  <div class="chart-legend-item"><span class="chart-legend-swatch other"></span> Employer Cost</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+      </div>
+
+    </main>
+
+    <!-- Modal for Profiles Management -->
+    <div class="modal-overlay" id="profiles-modal">
+      <div class="modal-dialog">
+        <div class="modal-header">
+          <h3 class="modal-title">Saved Scenarios &amp; Profiles</h3>
+          <button type="button" class="modal-close-btn" id="modal-close-btn">&times;</button>
+        </div>
+        
+        <p style="font-size: 0.8rem; color: var(--text-secondary); margin-bottom: 14px;">
+          Save your current salary, offers, and deduction setups to easily switch between job evaluation scenarios.
+        </p>
+
+        <!-- Save As New Profile -->
+        <div class="modal-input-row">
+          <input type="text" id="new-profile-name-input" placeholder="Profile name, e.g. Senior Tech Lead Offers" style="flex:1;">
+          <button type="button" class="btn-tool primary" id="btn-save-current-profile">Save</button>
+        </div>
+
+        <h4 style="font-size: 0.8rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 8px;">
+          Saved Profiles
+        </h4>
+        <div class="profile-list" id="saved-profiles-list">
+          <!-- Populated by JS -->
+        </div>
+
+        <div class="modal-footer-row">
+          <button type="button" class="btn-tool" id="btn-load-sample-data" style="font-size: 0.75rem;">
+            <svg viewBox="0 0 24 24"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+            <span>Load Sample Profile (2 Offers + Equity)</span>
+          </button>
+          <button type="button" class="btn-tool btn-danger-text" id="btn-clear-all-data">
+            <svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+            <span>Clear Storage</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer & Mandatory Legal Disclaimer -->
+    <footer class="app-footer">
+      <div class="security-badge">
+        <svg class="btn-icon" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 11 14 15 10"/></svg>
+        <span>Client-Side Privacy Guarantee · All data is stored locally in your browser</span>
+      </div>
+
+      <div class="disclaimer-box">
+        <div class="disclaimer-title">
+          <svg class="btn-icon" viewBox="0 0 24 24"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+          <span>Statutory Disclaimer</span>
+        </div>
+        <p>
+          This tool estimates take‑home pay and compares tax regimes for planning purposes only — it is not tax or legal advice. Figures reflect FY 2026‑27 (AY 2027‑28) rules as understood in September 2026; tax law changes with every Union Budget. Confirm figures at <a href="https://www.incometax.gov.in" target="_blank" rel="noopener" style="color: #818cf8; text-decoration: underline;">incometax.gov.in</a> or with a Chartered Accountant before declaring a regime to an employer or filing a return.
+        </p>
+      </div>
+
+      <p>&copy; 2026 India Salary Offer &amp; Tax Regime Comparator. Built with precision for Indian salaried professionals.</p>
+    </footer>
+
+  </div>
+
+  <!-- Scripts -->
+  <script src="js/calculator.js"></script>
+  <script src="js/storage.js"></script>
+  <script src="js/app.js"></script>
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./sw.js')
+          .then((reg) => console.log('SalaryEngine PWA active:', reg.scope))
+          .catch((err) => console.warn('PWA registration failed:', err));
+      });
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,98 @@
+{
+  "version": "1.0",
+  "note": "Sample multi-offer benchmark for FY 2026-27 (AY 2027-28)",
+  "profile": {
+    "ageBracket": "under60",
+    "city": "bengaluru",
+    "pfBasis": "actual",
+    "bonusTreatment": "include",
+    "employerType": "private"
+  },
+  "deductions": {
+    "annualRent": 360000,
+    "other80C": 50000,
+    "insuranceSelf": 25000,
+    "isSelfSenior": false,
+    "insuranceParents": 30000,
+    "isParentSenior": true,
+    "homeLoanInterest": 0,
+    "nps80CCD1B": 50000,
+    "otherDeductions": 0
+  },
+  "currentSalary": {
+    "enabled": true,
+    "mode": "quick",
+    "ctc": 2000000,
+    "details": {
+      "basic": 800000,
+      "hra": 400000,
+      "special": 507800,
+      "bonus": 0,
+      "employerPf": 96000,
+      "gratuity": 38480,
+      "employerNps": 0,
+      "employeePf": 96000
+    }
+  },
+  "activeOfferId": "offer_1",
+  "offers": [
+    {
+      "id": "offer_1",
+      "label": "Offer A",
+      "company": "Enterprise Product Corp",
+      "mode": "quick",
+      "ctc": 2800000,
+      "details": {
+        "basic": 1120000,
+        "hra": 560000,
+        "special": 710920,
+        "bonus": 0,
+        "employerPf": 134400,
+        "gratuity": 53872,
+        "employerNps": 0,
+        "employeePf": 134400,
+        "lta": 0,
+        "meal": 0,
+        "fuel": 0,
+        "telecom": 0,
+        "joining": 0
+      },
+      "esop": {
+        "enabled": true,
+        "grant": 2400000,
+        "vestingYears": 4,
+        "scheduleType": "equal",
+        "customPcts": [25, 25, 25, 25]
+      }
+    },
+    {
+      "id": "offer_2",
+      "label": "Offer B",
+      "company": "Growth Scaleup",
+      "mode": "quick",
+      "ctc": 3200000,
+      "details": {
+        "basic": 1280000,
+        "hra": 640000,
+        "special": 812480,
+        "bonus": 0,
+        "employerPf": 153600,
+        "gratuity": 61568,
+        "employerNps": 0,
+        "employeePf": 153600,
+        "lta": 0,
+        "meal": 0,
+        "fuel": 0,
+        "telecom": 0,
+        "joining": 0
+      },
+      "esop": {
+        "enabled": true,
+        "grant": 4000000,
+        "vestingYears": 4,
+        "scheduleType": "custom",
+        "customPcts": [10, 20, 30, 40]
+      }
+    }
+  ]
+}
